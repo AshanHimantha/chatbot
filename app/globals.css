@@ -120,3 +120,48 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Add to your global CSS */
+.markdown-content h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #4b5563;
+  padding-left: 1rem;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+
+.markdown-content hr {
+  border: 0;
+  border-top: 1px solid #4b5563;
+  margin: 1rem 0;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.markdown-content th, .markdown-content td {
+  border: 1px solid #4b5563;
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+}

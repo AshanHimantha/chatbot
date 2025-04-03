@@ -1,6 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { GoogleGenAI } from "@google/genai";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
 import {
   Card,
   CardContent,
@@ -107,11 +109,18 @@ export default function Home() {
       <Card className="w-full max-w-xl h-[80vh] border-zinc-800 bg-zinc-950 text-zinc-100 shadow-xl shadow-blue-900/5">
         <CardHeader className="border-b border-zinc-800 px-6 pb-4 pt-5">
           <div className="flex items-center">
-            <Avatar className="mr-3 h-8 w-8 bg-gradient-to-br from-blue-500 to-indigo-700">
-              <AvatarFallback className="text-white text-xs">AI</AvatarFallback>
+            <Avatar className="mr-3 h-8 w-8 bg-gradient-to-br from-blue-500 to-indigo-700" >
+              <AvatarImage
+                src="/logo.jpg"
+                alt="AI Avatar"
+                className={"rounded-full object-cover"}
+              />
+              <AvatarFallback className="text-white text-xs">
+                AI
+              </AvatarFallback>
             </Avatar>
             <CardTitle className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
-              Gemini AI Assistant
+              Cupiri Mahinda
             </CardTitle>
           </div>
         </CardHeader>
@@ -135,9 +144,11 @@ export default function Home() {
                 <div className="flex gap-3 max-w-[80%]">
                   {!message.isUser && (
                     <Avatar className="h-8 w-8 bg-gradient-to-br from-blue-500 to-indigo-700 mt-0.5">
-                      <AvatarFallback className="text-white text-xs">
-                        AI
-                      </AvatarFallback>
+                      <AvatarImage
+                src="/logo.jpg"
+                alt="AI Avatar"
+                className={"rounded-full object-cover"}
+              />
                     </Avatar>
                   )}
                   <div
@@ -147,7 +158,36 @@ export default function Home() {
                         : "bg-zinc-800 text-zinc-100"
                     }`}
                   >
-                    <p className="text-sm leading-relaxed">{message.text}</p>
+                    {message.isUser ? (
+                      <p className="text-sm leading-relaxed">{message.text}</p>
+                    ) : (
+                      <div className="markdown-content text-sm leading-relaxed">
+                        <ReactMarkdown 
+                          rehypePlugins={[rehypeHighlight]}
+                          components={{
+                            code({node, inline, className, children, ...props}) {
+                              return inline ? (
+                                <code className="bg-zinc-700 px-1 py-0.5 rounded text-xs" {...props}>{children}</code>
+                              ) : (
+                                <div className="bg-zinc-900 rounded-md my-2 overflow-hidden">
+                                  <div className="px-4 py-2 border-b border-zinc-700 text-xs text-zinc-400">Code</div>
+                                  <pre className="p-4 overflow-x-auto">
+                                    <code className={className} {...props}>{children}</code>
+                                  </pre>
+                                </div>
+                              )
+                            },
+                            p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
+                            ul: ({children}) => <ul className="list-disc ml-4 mb-2">{children}</ul>,
+                            ol: ({children}) => <ol className="list-decimal ml-4 mb-2">{children}</ol>,
+                            li: ({children}) => <li className="mb-1">{children}</li>,
+                            a: ({href, children}) => <a href={href} className="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">{children}</a>
+                          }}
+                        >
+                          {message.text}
+                        </ReactMarkdown>
+                      </div>
+                    )}
                   </div>
                   {message.isUser && (
                     <Avatar className="h-8 w-8 bg-zinc-700 mt-0.5">
